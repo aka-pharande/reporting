@@ -6,6 +6,7 @@ const sampleReports = [
       clientName: 'ABC Company',
       date: '2023-12-01',
       result: 'Pass',
+      reportName: '1_sample.pdf'
     },
     {
       id: 2,
@@ -14,6 +15,7 @@ const sampleReports = [
       clientName: 'XYZ Corporation',
       date: '2023-12-02',
       result: 'Fail',
+      reportName: '2_sample.pdf'
     },
   ];
   

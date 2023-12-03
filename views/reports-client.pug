@@ -10,6 +10,7 @@ block content
         th Test Name
         th Date
         th Result
+        th Report
     tbody
       each report in reports
         tr
@@ -17,3 +18,5 @@ block content
           td= report.testName
           td= report.date
           td= report.result
+          td
+            a(href=`/download-pdf/${report.id}`, class='btn-download') Download
