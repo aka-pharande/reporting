@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= title
+  link(rel='stylesheet', href='/stylesheets/styles.css')
+  table
+    thead
+      tr
+        th ID
+        th Test Name
+        th Client
+        th Date
+        th Result
+    tbody
+      each report in reports
+        tr
+          td= report.id
+          td= report.testName
+          td= report.client
+          td= report.date
+          td= report.result
