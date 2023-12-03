@@ -6,15 +6,15 @@ block content
   table
     thead
       tr
-        th Test ID
+        th #
         th Test Name
         th Date
         th Result
         th Report
     tbody
-      each report in reports
+      each report, index in reports
         tr
-          td= report.id
+          td= index + 1
           td= report.testName
           td= report.date
           td= report.result
