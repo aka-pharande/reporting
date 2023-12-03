@@ -6,9 +6,10 @@ block content
   table
     thead
       tr
-        th ID
+        th Test ID
         th Test Name
-        th Client
+        th Client ID
+        th Client Name
         th Date
         th Result
     tbody
@@ -16,6 +17,7 @@ block content
         tr
           td= report.id
           td= report.testName
-          td= report.client
+          td= report.clientId
+          td= report.clientName
           td= report.date
           td= report.result
