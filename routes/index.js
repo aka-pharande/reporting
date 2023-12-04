@@ -50,6 +50,19 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Logout route
+router.get('/logout', (req, res) => {
+  // Clear the user session
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Error during logout:', err);
+      res.status(500).send('Error during logout');
+    } else {
+      res.redirect('/login');
+    }
+  });
+});
+
 // Home route - Display clients
 router.get('/clients', async function (req, res, next) {
   try {
