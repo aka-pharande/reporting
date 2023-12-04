@@ -72,7 +72,7 @@ router.get('/clients', async function (req, res, next) {
     if (req.session.user && req.session.user.role !== 'admin') {
       res.status(403).send('Unauthorized - You are not authorized to view the list of customers');
     }
-    const [rows] = await db.execute('SELECT * FROM clients');
+    const [rows] = await db.execute('SELECT * FROM clients where role = "client"');
     res.render('clients', { title: 'Your Customers', clients: rows, user: req.session.user });
   } catch (error) {
     console.error('Error fetching clients from database:', error.message);
