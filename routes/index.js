@@ -20,6 +20,15 @@ router.use(function (req, res, next) {
 });
 
 // Home route - Display clients
+router.get('/', async function(req, res, next) {
+  try {
+    res.render('index', { title: 'Ashwamedh Reports'});
+  } catch (error) {
+    res.status(500).send('Error rendering');
+  }
+});
+
+// Home route - Display clients
 router.get('/clients', async function(req, res, next) {
   try {
     const [rows] = await db.execute('SELECT * FROM clients');
@@ -33,7 +42,6 @@ router.get('/clients', async function(req, res, next) {
 // Reports route - Display reports for a specific client
 // In index.js
 router.get('/reports', async function(req, res, next) {
-  console.log(req.session.user)
   try {
     // Check if user is an admin
     if (req.session.user && req.session.user.role === 'admin') {
