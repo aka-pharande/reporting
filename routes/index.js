@@ -1,23 +1,27 @@
 // index.js
 const express = require('express');
 const passport = require('passport');
+const bcrypt = require('bcrypt');
 
 const router = express.Router();
 const db = require('../db');
+const authMiddleware = require('../authMiddleware'); 
 const { fetchPdfFromStorage } = require('../azureStorage');
 
-router.use(function (req, res, next) {
-  // Initialize express-session middleware before this middleware
+// router.use(function (req, res, next) {
+//   // Initialize express-session middleware before this middleware
 
-  if (!req.session.user) {
-    req.session.user = {
-      id: 1,
-      username: 'abc',
-      role: 'admin'
-    };
-  }
-  next();
-});
+//   if (!req.session.user) {
+//     req.session.user = {
+//       id: 1,
+//       username: 'abc',
+//       role: 'admin'
+//     };
+//   }
+//   next();
+// });
+
+// router.use(authMiddleware);
 
 // Home route - Display clients
 router.get('/', async function(req, res, next) {
@@ -25,6 +29,45 @@ router.get('/', async function(req, res, next) {
     res.render('index', { title: 'Ashwamedh Reports'});
   } catch (error) {
     res.status(500).send('Error rendering');
+  }
+});
+
+router.get('/login', (req, res, next) => {
+  res.render('login');
+});
+
+router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  console.log(username)
+  console.log(password)
+
+  try {
+    const [userRows] = await db.execute('SELECT * FROM clients WHERE username = ?', [username]);
+
+    if (userRows.length === 1) {
+      const user = userRows[0];
+      console.log(user)
+      // Compare the entered password with the hashed password in the database
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      console.log(passwordMatch)
+      if (passwordMatch) {
+        // Set user information in the session
+        req.session.user = {
+          id: user.id,
+          username: user.username,
+          role: user.role
+        };
+
+        res.redirect('/');
+        return;
+      }
+    }
+
+    // Invalid username or password
+    res.render('login', { error: 'Invalid username or password' });
+  } catch (error) {
+    console.error('Error during login:', error.message);
+    res.status(500).send('Error during login');
   }
 });
 
