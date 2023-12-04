@@ -1,10 +1,15 @@
 extends layout
 
 block content
+  nav.navbar
+    div.navbar-brand
+      h1 Ashwamed Engineers and Consultants
+    div.navbar-links
+      a(href='/') Home
+      a(href='/clients') Clients
+      a(href='/reports') Reports
+      a(href='/logout') Logout
+
   div.dashboard-container
-    header
-      h1 Welcome, #{user.username}!
-      p Your role: #{user.role}
-    nav
-      a(href='/clients') View Clients
-      a(href='/reports') View Reports
+    h2 Welcome, #{user.username}!
+    // Your existing content

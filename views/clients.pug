@@ -1,20 +1,30 @@
 extends layout
 
 block content
-  h1= title
-  link(rel='stylesheet', href='/stylesheets/style.css')
-  table
-    thead
-      tr
-        th ID
-        th Name
-        th Email
-        th Phone
-    tbody
-      each client in clients
+  nav.navbar
+    div.navbar-brand
+      h1 Ashwamed Engineers and Consultants
+    div.navbar-links
+      a(href='/') Home
+      a(href='/clients') Clients
+      a(href='/reports') Reports
+      a(href='/logout') Logout
+
+  div.dashboard-container
+    h1= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    table
+        thead
         tr
-          td= client.id
-          td= client.name
-          td= client.email
-          td= client.phone
+            th ID
+            th Name
+            th Email
+            th Phone
+        tbody
+        each client in clients
+            tr
+            td= client.id
+            td= client.name
+            td= client.email
+            td= client.phone
         

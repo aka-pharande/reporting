@@ -36,64 +36,37 @@ tr:nth-child(even) {
   background-color: #45a049;
 }
 
-/* public/styles.css */
-
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-.login-container {
-  background-color: #fff;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  text-align: center;
-  color: #333;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-bottom: 5px;
-}
-
-input {
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-}
-
-input[type="submit"] {
-  background-color: #4caf50;
-  color: #fff;
-  cursor: pointer;
-}
-
-input[type="submit"]:hover {
-  background-color: #45a049;
-}
-
-/* public/styles.css */
 
 body {
   font-family: 'Arial', sans-serif;
   background-color: #f5f5f5;
   margin: 0;
   padding: 0;
+}
+
+.navbar {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand h1 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.navbar-links a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.navbar-links a:hover {
+  text-decoration: underline;
 }
 
 .dashboard-container {
@@ -104,32 +77,3 @@ body {
   margin: 20px;
 }
 
-header {
-  text-align: center;
-  color: #333;
-}
-
-h1 {
-  margin: 0;
-  font-size: 24px;
-}
-
-p {
-  margin: 10px 0;
-  color: #666;
-}
-
-nav {
-  display: flex;
-  justify-content: space-around;
-}
-
-a {
-  text-decoration: none;
-  color: #007bff;
-  font-weight: bold;
-}
-
-a:hover {
-  text-decoration: underline;
-}

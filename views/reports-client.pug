@@ -1,20 +1,30 @@
 extends layout
 
 block content
-  h1= title
-  link(rel='stylesheet', href='/stylesheets/style.css')
-  table
-    thead
-      tr
-        th #
-        th Test Name
-        th Date
-        th Report
-    tbody
-      each report, index in reports
+  nav.navbar
+    div.navbar-brand
+      h1 Ashwamed Engineers and Consultants
+    div.navbar-links
+      a(href='/') Home
+      a(href='/clients') Clients
+      a(href='/reports') Reports
+      a(href='/logout') Logout
+      
+  div.dashboard-container
+    h1= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    table
+      thead
         tr
-          td= index + 1
-          td= report.name
-          td= report.date
-          td
-            a(href=`/download-pdf/${report.id}`, class='btn-download') Download
+          th #
+          th Test Name
+          th Date
+          th Report
+      tbody
+        each report, index in reports
+          tr
+            td= index + 1
+            td= report.name
+            td= report.date
+            td
+              a(href=`/download-pdf/${report.id}`, class='btn-download') Download
