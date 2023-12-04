@@ -29,10 +29,10 @@ async function fetchPdfFromStorage(report) {
 
     // Generate a SAS token for the blob with public access (modify permissions as needed)
     const blobUrlWithSas = await generateSasToken(blobClient);
-    console.log(blobUrlWithSas)
+
     // Fetch the PDF content using the generated URL
     const response = await fetch(blobUrlWithSas);
-    console.log(response)
+    
     // Check the HTTP status code
     if (!response.ok) {
       console.error(`Error fetching PDF from Azure Storage. Status Code: ${response.status}`);
