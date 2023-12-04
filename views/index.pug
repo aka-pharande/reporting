@@ -1,5 +1,10 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div.dashboard-container
+    header
+      h1 Welcome, #{user.username}!
+      p Your role: #{user.role}
+    nav
+      a(href='/clients') View Clients
+      a(href='/reports') View Reports
