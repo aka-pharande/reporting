@@ -5,6 +5,9 @@ const bcrypt = require('bcrypt');
 const router = express.Router();
 const db = require('../db');
 const { fetchPdfFromStorage } = require('../azureStorage');
+const authMiddleware = require('../authMiddleware');
+
+router.use(authMiddleware);
 
 // Home route - Display clients
 router.get('/', async function (req, res, next) {
