@@ -1,15 +1,18 @@
 extends layout
 
 block content
-  h2 Login
-  if error
-    p.error= error
+  div.login-container
+    h2 Login
+    if error
+      p.error= error
 
-  form(action='/login' method='post')
-    label(for='username') Username:
-    input(type='text' name='username' required)
-    
-    label(for='password') Password:
-    input(type='password' name='password' required)
+    form(action='/login' method='post')
+      label(for='username') Username:
+      input(type='text' name='username' required)
+      
+      label(for='password') Password:
+      input(type='password' name='password' required)
 
-    input(type='submit' value='Login')
+      input(type='submit' value='Login')
+
+  link(rel='stylesheet' type='text/css' href='/styles.css')
