@@ -25,7 +25,7 @@ async function fetchPdfFromStorage(report) {
     const containerClient = blobServiceClient.getContainerClient(containerName);
 
     // Get a reference to the blob (report)
-    const blobClient = containerClient.getBlobClient(report.reportName);
+    const blobClient = containerClient.getBlobClient(report.fileName);
 
     // Generate a SAS token for the blob with public access (modify permissions as needed)
     const blobUrlWithSas = await generateSasToken(blobClient);

@@ -2,25 +2,21 @@ extends layout
 
 block content
   h1= title
-  link(rel='stylesheet', href='/stylesheets/styles.css')
+  link(rel='stylesheet', href='/stylesheets/style.css')
   table
     thead
       tr
         th Test ID
         th Test Name
         th Client ID
-        th Client Name
         th Date
-        th Result
         th Report
     tbody
       each report in reports
         tr
           td= report.id
-          td= report.testName
+          td= report.name
           td= report.clientId
-          td= report.clientName
           td= report.date
-          td= report.result
           td
             a(href=`/download-pdf/${report.id}`, class='btn-download') Download
