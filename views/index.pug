@@ -6,7 +6,8 @@ block content
       h1 Ashwamed Engineers and Consultants
     div.navbar-links
       a(href='/') Home
-      a(href='/clients') Clients
+      if (user.role === 'admin')
+        a(href='/clients') Clients
       a(href='/reports') Reports
       a(href='/logout') Logout
 
