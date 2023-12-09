@@ -20,8 +20,7 @@ router.use(authMiddleware);
 // Home route - Display clients
 router.get('/', async function (req, res, next) {
   try {
-    const { user } = req.session;
-    res.render('index', { title: 'Ashwamedh Reports', user });
+    res.render('index', { title: 'Ashwamedh Reports', user: req.session.user });
   } catch (error) {
     res.status(500).send('Error rendering');
   }
@@ -96,12 +95,12 @@ router.get('/reports', async function (req, res, next) {
       // Admin view: Show all reports
       const [reportRows] = await db.execute('SELECT reports.id, reports.name AS reportName, clients.name AS clientName, DATE_FORMAT(reports.date, "%Y-%m-%d %H:%i:%s") AS formattedDate, reports.fileName FROM reports JOIN clients ON reports.clientId = clients.id');
       const [clientsRows] = await db.execute('SELECT * FROM clients where role = "client"');
-      res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows });
+      res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows, user: req.session.user });
     } else if (req.session.user && req.session.user.role === 'client') {
       // Client view: Show reports for the logged-in client
       const [clientRows] = await db.execute('SELECT * FROM clients WHERE id = ?', [req.session.user.id]);
       const [reportRows] = await db.execute('SELECT * FROM reports WHERE clientId = ?', [req.session.user.id]);
-      res.render('reports-client', { title: 'Customer Reports', client: clientRows[0], reports: reportRows });
+      res.render('reports-client', { title: 'Customer Reports', client: clientRows[0], reports: reportRows, user: req.session.user });
     } else {
       res.render('dashboard/unauthorized', { title: 'Unauthorized Access', user: req.session.user });
     }

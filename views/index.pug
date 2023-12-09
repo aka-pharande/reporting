@@ -1,15 +1,5 @@
 extends layout
 
 block content
-  nav.navbar
-    div.navbar-brand
-      h1 Ashwamed Engineers and Consultants
-    div.navbar-links
-      a(href='/') Home
-      if (user.role === 'admin')
-        a(href='/clients') Clients
-      a(href='/reports') Reports
-      a(href='/logout') Logout
-
   div.dashboard-container
-    h2 Welcome, #{user.username}!
+    h2 Welcome to Ashwamedh Engineers & Consultants
