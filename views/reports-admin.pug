@@ -11,9 +11,14 @@ block content
       a(href='/logout') Logout
       
   div.dashboard-container
-    h1= title
-    // Button to open the modal
-    button(type='button', class='btn btn-primary btn-upload', data-bs-toggle='modal', data-bs-target='#uploadModal') Upload New Report
+
+    .row
+        .col-6
+          h1= title
+        .col-6.text-end
+          // Button to open the modal
+          button(type='button', class='btn btn-primary', data-bs-toggle='modal', data-bs-target='#uploadModal') Upload New Report
+
 
     if successMessage
       // Display the toast alert with close button
