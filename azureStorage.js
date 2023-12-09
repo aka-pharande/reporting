@@ -1,4 +1,5 @@
 // azureStorage.js
+const streamifier = require('streamifier');
 const { BlobServiceClient, StorageSharedKeyCredential } = require('@azure/storage-blob');
 require('dotenv').config();
 
@@ -48,6 +49,31 @@ async function fetchPdfFromStorage(report) {
   }
 }
 
+// Function to upload PDF to Azure Storage
+async function uploadPdfToStorage(report) {
+  try {
+    // Create container name based on clientId
+    const containerName = `client-${report.clientId}`;
+
+    // Get a reference to the container
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+
+    const readableStream = streamifier.createReadStream(report.file.buffer);
+
+    // Get a reference to the blob (report)
+    const blockBlobClient = containerClient.getBlockBlobClient(report.fileName);
+
+    await blockBlobClient.upload(report.file.buffer, report.file.size, {
+      blobHTTPHeaders: { blobContentType: 'application/pdf' }
+    });
+
+  } catch (error) {
+    console.error('Error uploading PDF to Azure Storage:', error.message);
+    throw error;
+  }
+}
+
+
 // Generate a shared access signature (SAS) token for the blob
 function generateSasToken(blobClient) {
   const expiryDate = new Date();
@@ -63,3 +89,4 @@ function generateSasToken(blobClient) {
 }
 
 module.exports = { fetchPdfFromStorage };
+module.exports = { uploadPdfToStorage };

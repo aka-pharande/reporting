@@ -1,10 +1,16 @@
 const express = require('express');
 const passport = require('passport');
 const bcrypt = require('bcrypt');
+const multer = require('multer');
+
+// const upload = multer({ dest: 'uploads/' }); // Set your desired upload directory
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 const db = require('../db');
 const { fetchPdfFromStorage } = require('../azureStorage');
+const { uploadPdfToStorage } = require('../azureStorage');
 const authMiddleware = require('../authMiddleware');
 
 router.use(authMiddleware);
@@ -87,12 +93,13 @@ router.get('/reports', async function (req, res, next) {
     if (req.session.user && req.session.user.role === 'admin') {
       // Admin view: Show all reports
       const [reportRows] = await db.execute('SELECT * FROM reports');
-      res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, user: req.session.user });
+      const [clientsRows] = await db.execute('SELECT * FROM clients where role = "client"');
+      res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows });
     } else if (req.session.user && req.session.user.role === 'client') {
       // Client view: Show reports for the logged-in client
       const [clientRows] = await db.execute('SELECT * FROM clients WHERE id = ?', [req.session.user.id]);
       const [reportRows] = await db.execute('SELECT * FROM reports WHERE clientId = ?', [req.session.user.id]);
-      res.render('reports-client', { title: 'Customer Reports', client: clientRows[0], reports: reportRows, user: req.session.user });
+      res.render('reports-client', { title: 'Customer Reports', client: clientRows[0], reports: reportRows });
     } else {
       res.render('dashboard/unauthorized', { title: 'Unauthorized Access', user: req.session.user });
     }
@@ -101,6 +108,51 @@ router.get('/reports', async function (req, res, next) {
     res.status(500).send('Error fetching data from database');
   }
 });
+
+
+router.post('/upload-report', upload.single('reportFile'), async (req, res) => {
+  // Check if the user is an admin
+  if (req.session.user && req.session.user.role === 'admin') {
+    const report = {
+      clientId: req.body.clientId,
+      name: req.body.reportName,
+      fileName: req.body.fileName || req.file.originalname,
+      file: req.file  
+    }
+
+    try {
+      // Perform necessary validations on clientId, reportName, and reportFile
+      if (!report.clientId || !report.name) {
+        // Handle validation errors
+        return res.status(400).send('Invalid input data');
+      }
+
+      await uploadPdfToStorage(report);
+
+      // Save report details to the database
+      const [result] = await db.execute(
+        'INSERT INTO reports (name, fileName, date, clientId) VALUES (?, ?, ?, ?)',
+        [report.name, report.fileName, new Date(), report.clientId]
+      );
+
+      if (result.affectedRows === 1) {
+        const successMessage = 'Report uploaded successfully!';
+        const [reportRows] = await db.execute('SELECT * FROM reports');
+        const [clientsRows] = await db.execute('SELECT * FROM clients where role = "client"');
+        res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows, successMessage });
+      } else {
+        res.status(500).send('Error uploading report');
+      }
+    } catch (error) {
+      console.error('Error during report upload:', error.message);
+      res.status(500).send('Error during report upload');
+    }
+  } else {
+    // Redirect unauthorized users
+    res.redirect('/');
+  }
+});
+
 
 router.get('/download-pdf/:reportId', async function (req, res, next) {
   const reportId = parseInt(req.params.reportId);
