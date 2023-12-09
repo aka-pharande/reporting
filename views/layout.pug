@@ -11,7 +11,8 @@ html
         h1 Ashwamed Engineers and Consultants
       div.d-flex.navbar-links
         a(href='/') Home
-        a(href='/clients') Clients
+        if (user.role === 'admin')
+          a(href='/clients') Clients
         a(href='/reports') Reports
         //- Replace the Logout button with a Profile dropdown
         div.dropdown
@@ -22,12 +23,12 @@ html
           //- The dropdown menu
           ul.dropdown-menu.dropdown-menu-end(aria-labelledby='profileDropdown', style='margin-top: 32px;')
             //- Style for the username
-            li(style='background-color: #f8f9fa; padding: 10px;')
+            li(style='background-color: #f8f9fa; padding: 10px; list-style: none;')
               p.mb-0.fs-6.text-secondary #{user.username}
             li.divider
             //- Style for the Logout option
-            li(style='background-color: #f8f9fa; padding: 10px;')
-              a(href='/logout', style='color: black;') Logout
+            li(style='background-color: #f8f9fa; padding: 10px; list-style: none;')
+              a(href='/logout', style='color: black; margin-left:0px') Logout
     block content
     script(src='https://code.jquery.com/jquery-3.5.1.slim.min.js', integrity='sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj', crossorigin='anonymous')
     script(src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js')
