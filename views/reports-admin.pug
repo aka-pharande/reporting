@@ -14,6 +14,17 @@ block content
     h1= title
     // Button to open the modal
     button(type='button', class='btn btn-primary btn-upload', data-bs-toggle='modal', data-bs-target='#uploadModal') Upload New Report
+
+    if successMessage
+      // Display the toast alert with close button
+      .position-absolute.bottom-0.start-50.translate-middle-x.p-3
+        .toast.show(id="testToast", style='background-color: #28a745; color: white;', role="alert", aria-live="assertive", aria-atomic="true", data-bs-autohide="true")
+          .toast-body.d-flex.justify-content-between.align-items-start 
+            span
+              | #{successMessage}
+            button.btn-close(type='button', data-bs-dismiss='toast', aria-label='Close')
+              span(aria-hidden='true') &times;
+
     table
       thead
         tr
@@ -48,9 +59,6 @@ block content
 
               label(for='reportName') Report Name:
               input.form-control(type='text' id='reportName' name='reportName' required)
-
-              label(for='fileName') File Name (optional):
-              input.form-control(type='text' id='fileName' name='fileName')
 
               label(for='reportFile') Upload Report File:
               input.form-control(type='file' id='reportFile' name='reportFile' accept='.pdf' required)
