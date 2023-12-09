@@ -15,14 +15,14 @@ block content
     table
         thead
         tr
-            th ID
+            th #
             th Name
             th Email
             th Phone
         tbody
-        each client in clients
+        each client, index in clients
             tr
-            td= client.id
+            td= index + 1
             td= client.name
             td= client.email
             td= client.phone
