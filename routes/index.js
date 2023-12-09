@@ -12,6 +12,8 @@ const db = require('../db');
 const { fetchPdfFromStorage } = require('../azureStorage');
 const { uploadPdfToStorage } = require('../azureStorage');
 const authMiddleware = require('../authMiddleware');
+const transporter = require('../email-transporter');
+
 
 router.use(authMiddleware);
 
@@ -136,9 +138,21 @@ router.post('/upload-report', upload.single('reportFile'), async (req, res) => {
       );
 
       if (result.affectedRows === 1) {
+
+        // Send email notification
+        const [clientRows] = await db.execute('SELECT * FROM clients WHERE id = ?', [report.clientId]);
+        const clientEmail = clientRows[0].email;
+        transporter.sendMail({
+          from: process.env.GMAIL_USER, // Sender email address
+          to: clientEmail, // Recipient email address
+          subject: 'New Report Uploaded',
+          text: `Dear Client,\n\nA new report (${report.name}) has been uploaded for your account.\n\nBest regards,\nThe Ashwamedh Reports Team`
+        });
+
         const successMessage = 'Report uploaded successfully!';
         const [reportRows] = await db.execute('SELECT reports.id, reports.name AS reportName, clients.name AS clientName, DATE_FORMAT(reports.date, "%Y-%m-%d %H:%i:%s") AS formattedDate, reports.fileName FROM reports JOIN clients ON reports.clientId = clients.id');
         const [clientsRows] = await db.execute('SELECT * FROM clients where role = "client"');
+
         res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows, successMessage });
       } else {
         res.status(500).send('Error uploading report');
