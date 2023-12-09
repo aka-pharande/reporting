@@ -35,16 +35,16 @@ block content
         tr
           th Test ID
           th Test Name
-          th Client ID
-          th Date
+          th Client Name
+          th Upload Date
           th Report
       tbody
         each report in reports
           tr
             td= report.id
-            td= report.name
-            td= report.clientId
-            td= report.date
+            td= report.reportName
+            td= report.clientName
+            td= report.formattedDate
             td
               a(href=`/download-pdf/${report.id}`, class='btn-download') Download
 

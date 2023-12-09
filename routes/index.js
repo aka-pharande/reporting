@@ -92,7 +92,7 @@ router.get('/reports', async function (req, res, next) {
     // Check if user is an admin
     if (req.session.user && req.session.user.role === 'admin') {
       // Admin view: Show all reports
-      const [reportRows] = await db.execute('SELECT * FROM reports');
+      const [reportRows] = await db.execute('SELECT reports.id, reports.name AS reportName, clients.name AS clientName, DATE_FORMAT(reports.date, "%Y-%m-%d %H:%i:%s") AS formattedDate, reports.fileName FROM reports JOIN clients ON reports.clientId = clients.id');
       const [clientsRows] = await db.execute('SELECT * FROM clients where role = "client"');
       res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows });
     } else if (req.session.user && req.session.user.role === 'client') {
@@ -137,7 +137,7 @@ router.post('/upload-report', upload.single('reportFile'), async (req, res) => {
 
       if (result.affectedRows === 1) {
         const successMessage = 'Report uploaded successfully!';
-        const [reportRows] = await db.execute('SELECT * FROM reports');
+        const [reportRows] = await db.execute('SELECT reports.id, reports.name AS reportName, clients.name AS clientName, DATE_FORMAT(reports.date, "%Y-%m-%d %H:%i:%s") AS formattedDate, reports.fileName FROM reports JOIN clients ON reports.clientId = clients.id');
         const [clientsRows] = await db.execute('SELECT * FROM clients where role = "client"');
         res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows, successMessage });
       } else {
