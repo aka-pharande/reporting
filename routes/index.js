@@ -3,7 +3,6 @@ const passport = require('passport');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
 
-// const upload = multer({ dest: 'uploads/' }); // Set your desired upload directory
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
@@ -122,7 +121,7 @@ router.post('/upload-report', upload.single('reportFile'), async (req, res) => {
     }
 
     try {
-      // Perform necessary validations on clientId, reportName, and reportFile
+
       if (!report.clientId || !report.name) {
         // Handle validation errors
         return res.status(400).send('Invalid input data');

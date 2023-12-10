@@ -1,5 +1,3 @@
-// authMiddleware.js
-
 function ensureAuthenticated(req, res, next) {
     // If the user is already authenticated and tries to access the /login route, redirect to /
     if (req.session && req.session.user && req.path === '/login') {
