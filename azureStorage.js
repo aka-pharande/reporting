@@ -88,5 +88,4 @@ function generateSasToken(blobClient) {
   return sasToken;
 }
 
-module.exports = { fetchPdfFromStorage };
-module.exports = { uploadPdfToStorage };
+module.exports = { fetchPdfFromStorage,  uploadPdfToStorage};

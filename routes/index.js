@@ -152,7 +152,7 @@ router.post('/upload-report', upload.single('reportFile'), async (req, res) => {
         const [reportRows] = await db.execute('SELECT reports.id, reports.name AS reportName, clients.name AS clientName, DATE_FORMAT(reports.date, "%Y-%m-%d %H:%i:%s") AS formattedDate, reports.fileName FROM reports JOIN clients ON reports.clientId = clients.id');
         const [clientsRows] = await db.execute('SELECT * FROM clients where role = "client"');
 
-        res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows, successMessage });
+        res.render('reports-admin', { title: 'All Test Reports', reports: reportRows, clients: clientsRows, user: req.session.user, successMessage });
       } else {
         res.status(500).send('Error uploading report');
       }
@@ -177,14 +177,14 @@ router.get('/download-pdf/:reportId', async function (req, res, next) {
       res.status(404).send('Report not found');
       return;
     }
-
+    console.log(report)
     const pdfBuffer = await fetchPdfFromStorage(report[0]);
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Disposition', `attachment; filename=${report[0].fileName}`);
-
     res.send(Buffer.from(pdfBuffer));
   } catch (error) {
+    console.error('Error fetching PDF from storage: ', error.message);
     res.status(500).send('Error fetching PDF from storage');
   }
 });
