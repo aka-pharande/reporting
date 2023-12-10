@@ -98,7 +98,7 @@ router.get('/reports', async function (req, res, next) {
     } else if (req.session.user && req.session.user.role === 'client') {
       // Client view: Show reports for the logged-in client
       const [clientRows] = await db.execute('SELECT * FROM clients WHERE id = ?', [req.session.user.id]);
-      const [reportRows] = await db.execute('SELECT * FROM reports WHERE clientId = ?', [req.session.user.id]);
+      const [reportRows] = await db.execute('SELECT id, clientId, name, DATE_FORMAT(date, "%Y-%m-%d %H:%i:%s") AS formattedDate, fileName FROM reports WHERE clientId = ?', [req.session.user.id]);
       res.render('reports-client', { title: 'Customer Reports', client: clientRows[0], reports: reportRows, user: req.session.user });
     } else {
       res.render('dashboard/unauthorized', { title: 'Unauthorized Access', user: req.session.user });
