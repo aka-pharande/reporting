@@ -113,18 +113,18 @@ router.get('/reports', async function (req, res, next) {
 router.post('/upload-report', upload.single('reportFile'), async (req, res) => {
   // Check if the user is an admin
   if (req.session.user && req.session.user.role === 'admin') {
-    const report = {
-      clientId: req.body.clientId,
-      name: req.body.reportName,
-      fileName: req.body.fileName || req.file.originalname,
-      file: req.file  
-    }
-
     try {
 
-      if (!report.clientId || !report.name) {
+      if (!req.body.clientId || !req.body.reportName || !req.file) {
         // Handle validation errors
         return res.status(400).send('Invalid input data');
+      }
+
+      const report = {
+        clientId: req.body.clientId,
+        name: req.body.reportName,
+        fileName: req.body.fileName || req.file.originalname,
+        file: req.file  
       }
 
       await uploadPdfToStorage(report);
@@ -176,7 +176,7 @@ router.get('/download-pdf/:reportId', async function (req, res, next) {
       res.status(404).send('Report not found');
       return;
     }
-    console.log(report)
+
     const pdfBuffer = await fetchPdfFromStorage(report[0]);
 
     res.setHeader('Content-Type', 'application/pdf');

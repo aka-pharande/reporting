@@ -26,14 +26,15 @@ tr:nth-child(even) {
   font-weight: bold;
   text-align: center;
   text-decoration: none;
-  background-color: #4caf50;
-  color: white;
+  /* background-color: #8f938f; */
+  color: #8f938f;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .btn-download:hover {
-  background-color: #45a049;
+  /* background-color: #484b48; */
+  color: #484b48;
 }
 
 
