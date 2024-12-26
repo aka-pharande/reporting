@@ -20,7 +20,7 @@ The system is built on a scalable and secure architecture with the following com
 - **Database:** MySQL for secure and efficient data storage.
 - **Cloud Integration:** Azure Storage for scalable and secure report file storage.
 
-![Architecture Diagram](assets/architecture-image.png)
+![Architecture Diagram](architecture-image.png)
 
 
 ### **Components**
